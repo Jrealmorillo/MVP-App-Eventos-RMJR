@@ -1,71 +1,117 @@
-# WebApp boilerplate with React JS and Flask API
+# IBENTO · MVP App Eventos
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+IBENTO is a full-stack web application for event management. It allows users and companies to create, discover, and manage events, buy tickets, and leave ratings.
 
-- Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+## Main Features
 
-### 1) Installation:
+- User registration and login with JWT authentication.
+- Company registration and employee assignment.
+- Event creation and event catalog browsing.
+- Ticket purchase flow with invoice generation.
+- Event ratings and comments.
+- Password recovery and reset flow.
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+## Tech Stack
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+### Frontend
+- React 16.8 (legacy version inherited from the starter template; upgrade has not been completed because it requires coordinated dependency updates and regression testing across the frontend)
+- React Router
+- Webpack
+- Bootstrap / custom styles
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+### Backend
+- Flask
+- SQLAlchemy + Flask-Migrate
+- JWT (flask-jwt-extended)
+- Argon2 password hashing
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+## Project Structure
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+- `./src/front` → React frontend.
+- `./src/api` → Flask API, models and routes.
+- `./migrations` → Database migrations.
+- `./public` → Bundled/static assets.
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+## Requirements
 
-### Backend Populate Table Users
+- Python 3.10
+- Node.js 16.x
+- npm
+- Pipenv
+- PostgreSQL (recommended) or SQLite
 
-To insert test users in the database execute the following command:
+## Environment Setup
 
-```sh
-$ flask insert-test-users 5
+1. Copy environment variables:
+
+```bash
+cp .env.example .env
 ```
 
-And you will see the following message:
+2. Update `.env` according to your local setup.
 
+Common variables:
+- `DATABASE_URL`
+- `FLASK_APP`
+- `FLASK_ENV`
+- `BACKEND_URL` (frontend uses this to call the API)
+- `FRONTEND_URL` (used by password reset flow)
+
+## Installation & Run
+
+### Backend (Flask API)
+
+```bash
+pipenv install
+pipenv run upgrade
+pipenv run start
 ```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
+
+Backend runs on `http://localhost:3001`.
+
+### Frontend (React)
+
+In another terminal:
+
+```bash
+npm install
+npm run start
 ```
 
-To update with all yours tables you can edit the file app.py and go to the line 80 to insert the code to populate others tables
+Frontend runs on `http://localhost:3000`.
 
-### Front-End Manual Installation:
+## Useful Scripts
 
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
+### npm
 
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
+```bash
+npm run start   # start webpack dev server
+npm run build   # production build
+```
 
-## Publish your website!
+### pipenv
 
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
+```bash
+pipenv run start    # start Flask app
+pipenv run migrate  # generate migration
+pipenv run upgrade  # apply migrations
+```
 
-### Contributors
+## API Overview
 
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
+Main routes are in `./src/api/routes.py`.
 
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+Examples:
+- `POST /api/signup`
+- `POST /api/login`
+- `GET /api/eventos`
+- `POST /api/crearevento`
+- `POST /api/factura`
+- `POST /api/valoracion`
+- `POST /api/forgotpassword`
+- `POST /api/password-reset`
+
+## Notes
+
+- This repository currently does not include automated test suites.
+- The app includes deployment-related files for Render/Procfile-based setups.
